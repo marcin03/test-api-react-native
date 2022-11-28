@@ -1,0 +1,1 @@
+export const REST_API_URL = "https://jsonplaceholder.typicode.com/albums/1/photos"
