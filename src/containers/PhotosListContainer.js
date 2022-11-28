@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ActivityIndicator, FlatList, View, Image } from 'react-native';
-import WebView from 'react-native-webview';
+import { StyleSheet, ActivityIndicator, FlatList, View, TouchableOpacity } from 'react-native';
+import PhotoItemPreview from '../components/PhotoItemPreview';
 import { REST_API_URL } from '../constants';
 
-export default function PhotosListContainer() {
+export default function PhotosListContainer({navigation}) {
   const [isLoading, setLoading] = useState(true);
   const [errorOccured, setErrorOccured] = useState(false);
   const [data, setData] = useState([]);
@@ -25,19 +25,13 @@ export default function PhotosListContainer() {
   }, []);
 
   const renderItem = ({ item }) => (
-    <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-      {/*WebView is workaround because using Image from react-native images is not visible*/}
-        <WebView
-          source={{uri: item.thumbnailUrl}}
-          containerStyle={{flex:0, width:150,height:150}}
-        />
-        <Text>{item.title},</Text>
-      </View>
-    
+    <TouchableOpacity onPress={() => navigation.navigate('PhotoDetailsScreen', {photoItem:{...item}})}>
+      <PhotoItemPreview photoItem={item}/>
+    </TouchableOpacity>
   );
 
   return (
-    <View style={{ flex: 1, padding: 24 }}>
+    <View style={styles.container}>
       {isLoading ? <ActivityIndicator/> : (
         <FlatList
           data={data}
@@ -45,6 +39,7 @@ export default function PhotosListContainer() {
           renderItem={renderItem}
         />
       )}
+      {errorOccured&&<Text>Error Occured Text</Text>}
     </View>
   );
 }
@@ -52,8 +47,6 @@ export default function PhotosListContainer() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    padding: 12
   },
 });

@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import PhotoItemView from '../components/PhotoItemView';
 
-export default function PhotoDetailsScreen() {
+export default function PhotoDetailsScreen({ route }) {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!:-)</Text>
+      <PhotoItemView photoItem={route.params.photoItem}/>
       <StatusBar style="auto" />
     </View>
   );
